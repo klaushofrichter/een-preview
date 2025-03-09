@@ -34,6 +34,33 @@ To build the application for production:
 npm run build
 ```
 
+## Deployment
+
+The application is configured for deployment to GitHub Pages. There are two ways to deploy:
+
+### Manual Deployment
+
+Run the following command to build and deploy the application:
+
+```bash
+npm run deploy
+```
+
+This will build the application and push the built files to the `gh-pages` branch of your repository.
+
+### Automated Deployment
+
+The application includes a GitHub Actions workflow that automatically deploys the application to GitHub Pages when changes are pushed to the `main` branch.
+
+To set up automated deployment:
+
+1. Push your code to a GitHub repository
+2. Go to your repository settings
+3. Navigate to Pages
+4. Set the source to "GitHub Actions"
+
+The application will be deployed to `https://[your-username].github.io/een-preview/`
+
 ## Usage
 
 1. Start the application

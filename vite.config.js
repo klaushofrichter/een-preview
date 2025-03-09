@@ -22,4 +22,12 @@ export default defineConfig({
     strictPort: true, // Fail if port is already in use
     open: true, // Automatically open the app in the browser
   },
+  // Base path for GitHub Pages
+  base: '/een-preview/',
+  build: {
+    // Output directory for the build
+    outDir: 'dist',
+    // Generate sourcemaps for better debugging
+    sourcemap: true,
+  },
 })
