@@ -89,12 +89,15 @@ The application will be deployed to `https://[your-username].github.io/een-previ
 
 ### Troubleshooting Deployment Issues
 
-If you encounter a blank screen or 404 errors after deployment:
+If you encounter errors after deployment:
 
 1. Make sure your browser console is open to see any error messages
 2. The application uses hash mode routing (`/#/`) which should work well with GitHub Pages
-3. If you see path-related errors, check that the base URL in `vite.config.js` is set to `'./'`
-4. Ensure all asset paths in the HTML files use relative paths (starting with `./`)
+3. If you see module resolution errors, try these solutions:
+   - Use the provided `deploy.sh` script instead of the npm deploy command
+   - Make sure the base URL in `vite.config.js` is set to `/een-preview/` (with slashes)
+   - Clear your browser cache after deployment
+4. If you're still having issues, try deploying with the GitHub Actions workflow instead of manual deployment
 
 ## Usage
 

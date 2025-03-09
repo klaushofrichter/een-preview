@@ -13,7 +13,7 @@
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "deploy": "vite build && gh-pages -d dist --message 'Deploy to GitHub Pages [skip ci]'"
+    "deploy": "./deploy.sh"
   },
   "dependencies": {
     "axios": "^1.8.2",
