@@ -24,6 +24,8 @@ To start the development server:
 npm run dev
 ```
 
+The application will be available at http://localhost:3333 and will automatically open in your default browser.
+
 ## Build
 
 To build the application for production:
@@ -35,7 +37,7 @@ npm run build
 ## Usage
 
 1. Start the application
-2. Enter the base URL for the Eagle Eye Networks API (default is https://api.eagleeyenetworks.com)
+2. Enter the base URL for the Eagle Eye Networks API (e.g., https://api.eagleeyenetworks.com)
 3. Enter your Eagle Eye Networks access token
 4. Enter the camera identifier
 5. Click "Get Preview" to fetch and display the camera preview image
@@ -44,19 +46,21 @@ The application will automatically save your base URL, access token, and camera 
 
 ## API Functionality
 
-The application makes the following API calls to the Eagle Eye Networks service:
+The application makes the following API calls to the Eagle Eye Networks service using Axios with API v3.0:
 
-1. Authenticate using the provided access token
-2. Get camera details to verify the camera exists
-3. Fetch the preview image URL and display it
+1. Get camera details to verify camera exists and display camera name
+2. Fetch the preview image URL and display it
 
 ## Features
 
 - Input fields for base URL, access token, and camera ID
 - Automatic loading of saved credentials from local storage
 - Automatic preview fetching when saved credentials are available
+- Displays camera name after successful retrieval
 - Error handling and display
 - Responsive design
+- Uses direct Axios calls with options objects for API requests
+- Compatible with Eagle Eye Networks API v3.0
 
 ## Project Structure
 

@@ -40,6 +40,10 @@
       >
         {{ loading ? 'Loading...' : 'Get Preview' }}
       </button>
+      
+      <div v-if="cameraName" class="camera-info">
+        <p><strong>Camera Name:</strong> {{ cameraName }}</p>
+      </div>
     </div>
     
     <div v-if="error" class="error-message">
@@ -55,7 +59,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { authenticate, getCameraDetails, getPreviewImage } from '@/services/eagleEyeApi';
+import { getCameraDetails, getPreviewImage } from '@/services/eagleEyeApi';
 
 // Local storage keys
 const ACCESS_TOKEN_KEY = 'eagle_eye_access_token';
@@ -67,10 +71,11 @@ export default {
   setup() {
     const accessToken = ref('');
     const cameraId = ref('');
-    const baseUrl = ref('https://api.eagleeyenetworks.com');
+    const baseUrl = ref('');
     const previewUrl = ref('');
     const loading = ref(false);
     const error = ref('');
+    const cameraName = ref('');
     
     // Load saved credentials from local storage on component mount
     onMounted(() => {
@@ -91,9 +96,9 @@ export default {
       }
       
       // If all values exist, automatically fetch the preview
-      if (savedAccessToken && savedCameraId && savedBaseUrl) {
-        fetchPreviewImage();
-      }
+      //if (savedAccessToken && savedCameraId && savedBaseUrl) {
+      //  fetchPreviewImage();
+      //}
     });
     
     // Save credentials to local storage
@@ -115,11 +120,17 @@ export default {
       loading.value = true;
       error.value = '';
       previewUrl.value = '';
+      cameraName.value = '';
       
       try {
         
         // Step 1: Get camera details to verify camera exists
-        await getCameraDetails(accessToken.value, cameraId.value, baseUrl.value);
+        const cameraDetails = await getCameraDetails(accessToken.value, cameraId.value, baseUrl.value);
+        
+        // Extract and store the camera name
+        if (cameraDetails && cameraDetails.name) {
+          cameraName.value = cameraDetails.name;
+        }
         
         // Step 2: Get preview image URL
         const imageUrl = await getPreviewImage(accessToken.value, cameraId.value, baseUrl.value);
@@ -139,6 +150,7 @@ export default {
       previewUrl,
       loading,
       error,
+      cameraName,
       fetchPreviewImage
     };
   }
@@ -187,6 +199,7 @@ input {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s;
+  margin-bottom: 15px;
 }
 
 .preview-button:hover:not(:disabled) {
@@ -196,6 +209,14 @@ input {
 .preview-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.camera-info {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e7f3fe;
+  border-radius: 4px;
+  border-left: 4px solid #2196F3;
 }
 
 .error-message {

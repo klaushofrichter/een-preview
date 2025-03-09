@@ -2,7 +2,7 @@
  * Eagle Eye Networks API Service
  * This service handles all API calls to the Eagle Eye Networks API
  */
-
+import axios from 'axios';
 
 /**
  * Get camera details by ID
@@ -13,23 +13,28 @@
  */
 export async function getCameraDetails(accessToken, cameraId, baseUrl) {
   try {
-    console.log(`${baseUrl}/api/v3.0/cameras/${cameraId}`);
-    const response = await fetch(`${baseUrl}/api/v3.0/cameras/${cameraId}`, {
+    const options = {
       method: 'GET',
+      url: `${baseUrl}/api/v3.0/cameras/${cameraId}`,
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
       }
-    });
-    console.log(response);
-
-    if (!response.ok) {
-      throw new Error(`Failed to get camera details: ${response.status} ${response.statusText}`);
-    }
-
-    return await response.json();
+    };
+    
+    console.log(options);
+    const response = await axios(options);
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error('Error getting camera details:', error);
-    throw error;
+    if (error.response) {
+      throw new Error(`Failed to get camera details: ${error.response.status} ${error.response.statusText}`);
+    } else if (error.request) {
+      throw new Error('No response received from server. Please check your network connection.');
+    } else {
+      throw error;
+    }
   }
 }
 
@@ -40,24 +45,27 @@ export async function getCameraDetails(accessToken, cameraId, baseUrl) {
  * @param {string} baseUrl - The base URL for the API
  * @returns {Promise<string>} - The preview image URL
  */
-export async function getPreviewImage(accessToken, cameraId, baseUrl = 'https://api.eagleeyenetworks.com') {
+export async function getPreviewImage(accessToken, cameraId, baseUrl) {
   try {
-    // First, get the preview URL
-    const response = await fetch(`${baseUrl}/api/v2.0/cameras/${cameraId}/preview`, {
+    const options = {
       method: 'GET',
+      url: `${baseUrl}/api/v3.0/cameras/${cameraId}/preview`,
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
       }
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to get preview image: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.url; // Return the URL to the preview image
+    };
+    
+    const response = await axios(options);
+    return response.data.url; // Return the URL to the preview image
   } catch (error) {
     console.error('Error getting preview image:', error);
-    throw error;
+    if (error.response) {
+      throw new Error(`Failed to get preview image: ${error.response.status} ${error.response.statusText}`);
+    } else if (error.request) {
+      throw new Error('No response received from server. Please check your network connection.');
+    } else {
+      throw error;
+    }
   }
 } 
