@@ -49,7 +49,8 @@ The application will automatically save your base URL, access token, and camera 
 The application makes the following API calls to the Eagle Eye Networks service using Axios with API v3.0:
 
 1. Get camera details to verify camera exists and display camera name
-2. Fetch the preview image URL and display it
+2. Fetch the preview image URL using the feeds endpoint with deviceId, type=preview, and multipartUrl parameters
+3. Get a media session URL from the media/session endpoint and immediately set the authentication cookie
 
 ## Features
 
@@ -57,6 +58,9 @@ The application makes the following API calls to the Eagle Eye Networks service 
 - Automatic loading of saved credentials from local storage
 - Automatic preview fetching when saved credentials are available
 - Displays camera name after successful retrieval
+- Uses the feeds endpoint with specific parameters for optimal preview images
+- Correctly extracts the multipartUrl from the results array in the API response
+- Retrieves a media session URL and automatically sets the authentication cookie
 - Error handling and display
 - Responsive design
 - Uses direct Axios calls with options objects for API requests

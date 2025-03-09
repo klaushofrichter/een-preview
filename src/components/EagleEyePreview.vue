@@ -73,6 +73,7 @@ export default {
     const cameraId = ref('');
     const baseUrl = ref('');
     const previewUrl = ref('');
+    const mediaSessionUrl = ref('');
     const loading = ref(false);
     const error = ref('');
     const cameraName = ref('');
@@ -120,6 +121,7 @@ export default {
       loading.value = true;
       error.value = '';
       previewUrl.value = '';
+      mediaSessionUrl.value = '';
       cameraName.value = '';
       
       try {
@@ -132,9 +134,12 @@ export default {
           cameraName.value = cameraDetails.name;
         }
         
-        // Step 2: Get preview image URL
-        const imageUrl = await getPreviewImage(accessToken.value, cameraId.value, baseUrl.value);
-        previewUrl.value = imageUrl;
+        // Step 2: Get preview image URL and media session URL
+        const result = await getPreviewImage(accessToken.value, cameraId.value, baseUrl.value);
+        previewUrl.value = result.previewUrl;
+        mediaSessionUrl.value = result.mediaSessionUrl;
+        
+        // Cookie is already set in the getMediaSessionUrl function
       } catch (err) {
         error.value = `Error: ${err.message}`;
         console.error('Failed to fetch preview:', err);
@@ -148,6 +153,7 @@ export default {
       cameraId,
       baseUrl,
       previewUrl,
+      mediaSessionUrl,
       loading,
       error,
       cameraName,
@@ -219,6 +225,21 @@ input {
   border-left: 4px solid #2196F3;
 }
 
+.media-session-info {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #fff9e6;
+  border-radius: 4px;
+  border-left: 4px solid #ffc107;
+  text-align: left;
+}
+
+.info-text {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
 .error-message {
   color: #f44336;
   margin: 15px 0;
@@ -238,4 +259,4 @@ input {
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-</style> 
+</style>

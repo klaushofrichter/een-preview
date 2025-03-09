@@ -26,3 +26,24 @@ do not create an axios apiClient. Instead, create an options object for each cal
 
 # show the camera name
 after calling getCameraDetails, show the camera name below the "get Preview" button. 
+
+# get the multipart URL for the device
+to get information about the preview image, call /api/v3.0/feeds/${cameraId} instead of ../preview.  add a parameter "include" with the value "multipartUrl". This returns a list of urls that can be used to display the image. 
+
+# provide the esn via parameter
+when calling the feeds API, provide the cameraId as parameter with the parameter name deviceId
+
+# only get preview data
+to receive only the preview url, add a parameter "type" with the value "preview" to the feeds call.
+
+# explain the result of the /feeds call 
+The result of the feeds call is a JSON object that includes an array with the name "results". The first array element has the key "multipartUrl" which is the URL to the image. 
+
+# call the /session api
+after getting the multipartUrl, make a call to the /api/v3.0/media/session API to retrieve another URL that can be used to set a cookie. 
+
+# set the cookie
+in the function getMediaSessionUrl make a call to the media session URL right way, with the authentication token 
+
+# avoid showing the media URL on the app 
+do not show the media session URL in the app window
