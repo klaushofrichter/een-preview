@@ -58,15 +58,18 @@ export async function getMediaSessionUrl(accessToken, baseUrl) {
     if (response.data && response.data.url) {
       const mediaSessionUrl = response.data.url;
       
-      // Make a call to the media session URL right away to set the cookie
+      // Make a call to the media session URL right away to set the cookie using axios
       try {
-        await fetch(mediaSessionUrl, { 
-          method: 'GET', 
-          credentials: 'include',
+        const cookieOptions = {
+          method: 'GET',
+          url: mediaSessionUrl,
           headers: {
             'Authorization': `Bearer ${accessToken}`
-          }
-        });
+          },
+          withCredentials: true // This is equivalent to credentials: 'include' in fetch
+        };
+        
+        await axios(cookieOptions);
         console.log('Cookie set successfully with media session URL');
       } catch (cookieErr) {
         console.warn('Failed to set cookie with media session URL:', cookieErr);

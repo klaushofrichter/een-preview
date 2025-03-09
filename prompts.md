@@ -47,3 +47,6 @@ in the function getMediaSessionUrl make a call to the media session URL right wa
 
 # avoid showing the media URL on the app 
 do not show the media session URL in the app window
+
+# use axios instead of fetch
+in the functiongetMediaSessionUrl use axios with options object instead of fetch
