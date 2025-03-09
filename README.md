@@ -40,6 +40,10 @@ The application is configured for deployment to GitHub Pages. There are two ways
 
 ### Manual Deployment
 
+There are two ways to manually deploy the application:
+
+#### Option 1: Using the deploy script
+
 Run the following command to build and deploy the application:
 
 ```bash
@@ -47,6 +51,27 @@ npm run deploy
 ```
 
 This will build the application and push the built files to the `gh-pages` branch of your repository.
+
+#### Option 2: Using a Personal Access Token (if Option 1 fails)
+
+If you encounter permission issues with the deploy script, you can use a personal access token:
+
+1. Generate a Personal Access Token (PAT) in GitHub:
+   - Go to GitHub Settings > Developer settings > Personal access tokens
+   - Generate a new token with the `repo` scope
+   - Copy the token
+
+2. Set up the token for deployment:
+
+```bash
+# Replace YOUR_TOKEN with your personal access token
+git remote set-url origin https://YOUR_TOKEN@github.com/klaushofrichter/een-preview.git
+
+# Run the deploy script
+npm run deploy
+```
+
+This will use your personal access token for authentication when pushing to GitHub.
 
 ### Automated Deployment
 
@@ -56,8 +81,9 @@ To set up automated deployment:
 
 1. Push your code to a GitHub repository
 2. Go to your repository settings
-3. Navigate to Pages
-4. Set the source to "GitHub Actions"
+3. Navigate to "Actions" > "General" and ensure that "Read and write permissions" is selected under "Workflow permissions"
+4. Navigate to "Pages"
+5. Set the source to "GitHub Actions"
 
 The application will be deployed to `https://[your-username].github.io/een-preview/`
 
@@ -103,17 +129,3 @@ The application makes the following API calls to the Eagle Eye Networks service 
 ## License
 
 MIT
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
