@@ -36,7 +36,7 @@ npm run build
 
 ## Deployment
 
-The application is configured for deployment to GitHub Pages. There are two ways to deploy:
+The application is configured for deployment to GitHub Pages using hash mode routing for better compatibility. There are two ways to deploy:
 
 ### Manual Deployment
 
@@ -86,6 +86,15 @@ To set up automated deployment:
 5. Set the source to "GitHub Actions"
 
 The application will be deployed to `https://[your-username].github.io/een-preview/`
+
+### Troubleshooting Deployment Issues
+
+If you encounter a blank screen or 404 errors after deployment:
+
+1. Make sure your browser console is open to see any error messages
+2. The application uses hash mode routing (`/#/`) which should work well with GitHub Pages
+3. If you see path-related errors, check that the base URL in `vite.config.js` is set to `'./'`
+4. Ensure all asset paths in the HTML files use relative paths (starting with `./`)
 
 ## Usage
 

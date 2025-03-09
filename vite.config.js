@@ -23,11 +23,20 @@ export default defineConfig({
     open: true, // Automatically open the app in the browser
   },
   // Base path for GitHub Pages
-  base: '/een-preview/',
+  base: './',
   build: {
     // Output directory for the build
     outDir: 'dist',
     // Generate sourcemaps for better debugging
     sourcemap: true,
+    // Ensure assets are properly referenced
+    assetsDir: 'assets',
+    // Use relative paths in the build
+    assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
   },
 })
