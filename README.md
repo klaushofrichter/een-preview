@@ -35,11 +35,12 @@ npm run build
 ## Usage
 
 1. Start the application
-2. Enter your Eagle Eye Networks access token
-3. Enter the camera identifier
-4. Click "Get Preview" to fetch and display the camera preview image
+2. Enter the base URL for the Eagle Eye Networks API (default is https://api.eagleeyenetworks.com)
+3. Enter your Eagle Eye Networks access token
+4. Enter the camera identifier
+5. Click "Get Preview" to fetch and display the camera preview image
 
-The application will automatically save your access token and camera ID to local storage. When you reload the page or return to the application later, it will automatically retrieve these credentials and fetch the preview image.
+The application will automatically save your base URL, access token, and camera ID to local storage. When you reload the page or return to the application later, it will automatically retrieve these credentials and fetch the preview image.
 
 ## API Functionality
 
@@ -51,7 +52,7 @@ The application makes the following API calls to the Eagle Eye Networks service:
 
 ## Features
 
-- Input fields for access token and camera ID
+- Input fields for base URL, access token, and camera ID
 - Automatic loading of saved credentials from local storage
 - Automatic preview fetching when saved credentials are available
 - Error handling and display

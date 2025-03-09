@@ -4,6 +4,16 @@
     
     <div class="form-container">
       <div class="form-group">
+        <label for="baseUrl">Base URL:</label>
+        <input 
+          id="baseUrl" 
+          v-model="baseUrl" 
+          type="text" 
+          placeholder="Enter base URL (e.g., https://api.eagleeyenetworks.com)"
+        />
+      </div>
+      
+      <div class="form-group">
         <label for="accessToken">Access Token:</label>
         <input 
           id="accessToken" 
@@ -25,7 +35,7 @@
       
       <button 
         @click="fetchPreviewImage" 
-        :disabled="loading || !accessToken || !cameraId"
+        :disabled="loading || !accessToken || !cameraId || !baseUrl"
         class="preview-button"
       >
         {{ loading ? 'Loading...' : 'Get Preview' }}
@@ -50,12 +60,14 @@ import { authenticate, getCameraDetails, getPreviewImage } from '@/services/eagl
 // Local storage keys
 const ACCESS_TOKEN_KEY = 'eagle_eye_access_token';
 const CAMERA_ID_KEY = 'eagle_eye_camera_id';
+const BASE_URL_KEY = 'eagle_eye_base_url';
 
 export default {
   name: 'EagleEyePreview',
   setup() {
     const accessToken = ref('');
     const cameraId = ref('');
+    const baseUrl = ref('https://api.eagleeyenetworks.com');
     const previewUrl = ref('');
     const loading = ref(false);
     const error = ref('');
@@ -64,6 +76,7 @@ export default {
     onMounted(() => {
       const savedAccessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
       const savedCameraId = localStorage.getItem(CAMERA_ID_KEY);
+      const savedBaseUrl = localStorage.getItem(BASE_URL_KEY);
       
       if (savedAccessToken) {
         accessToken.value = savedAccessToken;
@@ -73,8 +86,12 @@ export default {
         cameraId.value = savedCameraId;
       }
       
-      // If both values exist, automatically fetch the preview
-      if (savedAccessToken && savedCameraId) {
+      if (savedBaseUrl) {
+        baseUrl.value = savedBaseUrl;
+      }
+      
+      // If all values exist, automatically fetch the preview
+      if (savedAccessToken && savedCameraId && savedBaseUrl) {
         fetchPreviewImage();
       }
     });
@@ -83,11 +100,12 @@ export default {
     function saveCredentials() {
       localStorage.setItem(ACCESS_TOKEN_KEY, accessToken.value);
       localStorage.setItem(CAMERA_ID_KEY, cameraId.value);
+      localStorage.setItem(BASE_URL_KEY, baseUrl.value);
     }
     
     async function fetchPreviewImage() {
-      if (!accessToken.value || !cameraId.value) {
-        error.value = 'Please enter both access token and camera ID';
+      if (!accessToken.value || !cameraId.value || !baseUrl.value) {
+        error.value = 'Please enter base URL, access token, and camera ID';
         return;
       }
       
@@ -99,14 +117,12 @@ export default {
       previewUrl.value = '';
       
       try {
-        // Step 1: Authenticate
-        await authenticate(accessToken.value);
         
-        // Step 2: Get camera details to verify camera exists
-        await getCameraDetails(accessToken.value, cameraId.value);
+        // Step 1: Get camera details to verify camera exists
+        await getCameraDetails(accessToken.value, cameraId.value, baseUrl.value);
         
-        // Step 3: Get preview image URL
-        const imageUrl = await getPreviewImage(accessToken.value, cameraId.value);
+        // Step 2: Get preview image URL
+        const imageUrl = await getPreviewImage(accessToken.value, cameraId.value, baseUrl.value);
         previewUrl.value = imageUrl;
       } catch (err) {
         error.value = `Error: ${err.message}`;
@@ -119,6 +135,7 @@ export default {
     return {
       accessToken,
       cameraId,
+      baseUrl,
       previewUrl,
       loading,
       error,

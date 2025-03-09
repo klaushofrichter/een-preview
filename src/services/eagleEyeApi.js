@@ -3,46 +3,24 @@
  * This service handles all API calls to the Eagle Eye Networks API
  */
 
-/**
- * Authenticate with the Eagle Eye Networks API using an access token
- * @param {string} accessToken - The access token for authentication
- * @returns {Promise<Object>} - The authentication response
- */
-export async function authenticate(accessToken) {
-  try {
-    const response = await fetch('https://api.eagleeyenetworks.com/api/v2.0/authenticate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`Authentication failed: ${response.status} ${response.statusText}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Authentication error:', error);
-    throw error;
-  }
-}
 
 /**
  * Get camera details by ID
  * @param {string} accessToken - The access token for authentication
  * @param {string} cameraId - The ID of the camera
+ * @param {string} baseUrl - The base URL for the API
  * @returns {Promise<Object>} - The camera details
  */
-export async function getCameraDetails(accessToken, cameraId) {
+export async function getCameraDetails(accessToken, cameraId, baseUrl) {
   try {
-    const response = await fetch(`https://api.eagleeyenetworks.com/api/v2.0/cameras/${cameraId}`, {
+    console.log(`${baseUrl}/api/v3.0/cameras/${cameraId}`);
+    const response = await fetch(`${baseUrl}/api/v3.0/cameras/${cameraId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
     });
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(`Failed to get camera details: ${response.status} ${response.statusText}`);
@@ -59,12 +37,13 @@ export async function getCameraDetails(accessToken, cameraId) {
  * Get preview image for a camera
  * @param {string} accessToken - The access token for authentication
  * @param {string} cameraId - The ID of the camera
+ * @param {string} baseUrl - The base URL for the API
  * @returns {Promise<string>} - The preview image URL
  */
-export async function getPreviewImage(accessToken, cameraId) {
+export async function getPreviewImage(accessToken, cameraId, baseUrl = 'https://api.eagleeyenetworks.com') {
   try {
     // First, get the preview URL
-    const response = await fetch(`https://api.eagleeyenetworks.com/api/v2.0/cameras/${cameraId}/preview`, {
+    const response = await fetch(`${baseUrl}/api/v2.0/cameras/${cameraId}/preview`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${accessToken}`
